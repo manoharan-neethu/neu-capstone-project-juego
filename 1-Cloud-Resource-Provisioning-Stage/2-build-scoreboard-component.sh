@@ -79,7 +79,7 @@ if [ "$SCRIPT_MODE" = "up" ]; then
   echo -e "\n${GREEN}>>>Creating CTFd Host (${CTFD_INTERNAL_HOSTNAME}.${INTERNAL_DNS_ZONE_DOMAIN})<<<${ENDCOLOR}"
   gcloud compute instances create "$CTFD_HOST_ID" \
     --hostname="$CTFD_INTERNAL_HOSTNAME.$INTERNAL_DNS_ZONE_DOMAIN" \
-    --description="VM instance will host ISSessionsCTF CTFd containers including the CTFd Flask application, a MariaDB MySQL database, and a Redis cache." \
+    --description="VM instance will host juego2022CTF CTFd containers including the CTFd Flask application, a MariaDB MySQL database, and a Redis cache." \
     --zone="$GCP_ZONE" \
     --machine-type="$CTFD_MACHINE_TYPE" \
     --subnet="$INTERNAL_SUBNET_ID" \
@@ -102,7 +102,7 @@ if [ "$SCRIPT_MODE" = "up" ]; then
   echo -e "\n${GREEN}>>>Creating Nginx Host (${NGINX_INTERNAL_HOSTNAME}.${INTERNAL_DNS_ZONE_DOMAIN})<<<${ENDCOLOR}"
   gcloud compute instances create "$NGINX_HOST_ID" \
     --hostname="$NGINX_INTERNAL_HOSTNAME.$INTERNAL_DNS_ZONE_DOMAIN" \
-    --description="VM instance will host ISSessionsCTF Nginx container acting as a reverse proxy to CTFd." \
+    --description="VM instance will host juego2022CTF Nginx container acting as a reverse proxy to CTFd." \
     --zone="$GCP_ZONE" \
     --machine-type="$NGINX_MACHINE_TYPE" \
     --subnet="$DMZ_SUBNET_ID" \

@@ -61,7 +61,7 @@ if [ "$SCRIPT_MODE" = "up" ]; then
   echo -e "\n${GREEN}>>>Creating HAProxy Host (${HAPROXY_INTERNAL_HOSTNAME}.${INTERNAL_DNS_ZONE_DOMAIN})<<<${ENDCOLOR}"
   gcloud compute instances create "$HAPROXY_HOST_ID" \
     --hostname="$HAPROXY_INTERNAL_HOSTNAME.$INTERNAL_DNS_ZONE_DOMAIN" \
-    --description="VM instance will host ISSessionsCTF HAProxy container acting as a proxy to TCP-Based Hosted Challenges." \
+    --description="VM instance will host juego2022CTF HAProxy container acting as a proxy to TCP-Based Hosted Challenges." \
     --zone="$GCP_ZONE" \
     --machine-type="$HAPROXY_MACHINE_TYPE" \
     --subnet="$DMZ_SUBNET_ID" \

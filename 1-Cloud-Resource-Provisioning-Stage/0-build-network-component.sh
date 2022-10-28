@@ -90,7 +90,7 @@ if [ "$SCRIPT_MODE" = "up" ]; then
   # Create Managed Cloud DNS Zone
   echo -e "\n${GREEN}>>>Creating Managed Cloud DNS Zone<<<${ENDCOLOR}"
   gcloud dns managed-zones create "$INTERNAL_DNS_ZONE_ID" \
-	  --description="Private DNS Zone for ISSessionsCTF Infrastructure." \
+	  --description="Private DNS Zone for juego2022CTF Infrastructure." \
 	  --dns-name="$INTERNAL_DNS_ZONE_DOMAIN" \
 	  --networks="$VPC_NETWORK" \
 	  --visibility=private
@@ -98,7 +98,7 @@ if [ "$SCRIPT_MODE" = "up" ]; then
   # Create Inbound Forwarding Policy to Allow VPN Clients (On-Prem) to Query GCP Private DNS Zones
   echo -e "\n${GREEN}>>>Creating Inbound Forwarding Policy to Allow VPN Clients (On-Prem) to Query GCP Private DNS Zones<<<${ENDCOLOR}"
   gcloud dns policies create "allow-on-prem-to-query-gcp-dns-policy" \
-	  --description="This policy allows VPN clients to query the private DNS zone of the GCP ISSessionsCTF environment." \
+	  --description="This policy allows VPN clients to query the private DNS zone of the GCP juego2022CTF environment." \
 	  --networks="$VPC_NETWORK" \
 	  --enable-inbound-forwarding
 

@@ -10,7 +10,7 @@ Welcome! The objective of this module to complete a number of important prerequi
 
 ## Prerequisites
 1. Chik-p is meant to be used as a template. If you have not already clicked the green "Use This Template" button on Chik-p's Github page, please do so! This action will create a copy of Chik-p's repository so that you can customize it for your CTF.
-2. By default, Chik-p assumes that you are setting up a 100% online public CTF (i.e not behind a VPN). As such, you will need a registered public domain such as `issessions.ca`.
+2. By default, Chik-p assumes that you are setting up a 100% online public CTF (i.e not behind a VPN). As such, you will need a registered public domain such as `juego2022.com`.
 
 ## Infrastructure Build Process: Important Accounts
 

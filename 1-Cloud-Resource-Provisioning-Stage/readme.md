@@ -51,7 +51,7 @@ cd 1-Cloud-Resource-Provisioning-Stage/
 2. Open `config.sh` and edit the value of **ANSIBLE_PUBLIC_KEY_PATH** to point to the path of the ansible public key on disk. If you followed the instructions in **0-Initial-Setup-Stage**, this should be its path: `~/.ssh/ansible.pub`.
 
 3. Edit other parameters as needed. Note that:
-  - You probably want to use a domain other than `issessions.ca` if you do not own that domain.
+  - You probably want to use a domain other than `juego2022.com` if you do not own that domain.
   - You may wish to give VMs more or less resources.
   - You may wish to upgrade the OS images in use.
 
@@ -75,7 +75,7 @@ And to tear it down, run:
 
 5. Create DNS records for internet-facing hosts (Nginx, HAProxy, etc.) as directed by each script. 
 
-For example, a script will spit out the public IP address of the Nginx host and ask you to add a DNS A record to your public domain mapping that IP to a particular hostname (such as "ctf.issessions.ca"). Note that the hostname given by the script is only a suggestion. You can use other hostnames if you wish. Just be consistent when configuring services later on.
+For example, a script will spit out the public IP address of the Nginx host and ask you to add a DNS A record to your public domain mapping that IP to a particular hostname (such as "ctf.juego2022.com"). Note that the hostname given by the script is only a suggestion. You can use other hostnames if you wish. Just be consistent when configuring services later on.
 
 <br />
 

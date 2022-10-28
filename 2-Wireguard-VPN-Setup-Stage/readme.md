@@ -71,7 +71,7 @@ ssh-add ~/.ssh/ctf
 
 ### Step #5: Set Ansible's Target Host in `inventory.yml` 
 
-Navigate to the playbook directory and edit the `inventory.yml` file. Set the host to be your VPN's public domain name (i.e. the one reflected in the DNS A record you created). Substitute it in place of `vpn.ctf.issessions.ca`. Effectively, we are telling Ansible where to run the ansible playbooks (i.e. the VPN host).
+Navigate to the playbook directory and edit the `inventory.yml` file. Set the host to be your VPN's public domain name (i.e. the one reflected in the DNS A record you created). Substitute it in place of `vpn.ctf.juego2022.com`. Effectively, we are telling Ansible where to run the ansible playbooks (i.e. the VPN host).
 
 
 ### Step #6: Run Ansible Playbooks

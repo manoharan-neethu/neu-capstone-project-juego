@@ -2,7 +2,7 @@ all:
   children:
     vpn:
       hosts:
-        vpn.ctf.issessions.ca:
+        vpn.ctf.juego2022.com:
         
 
 

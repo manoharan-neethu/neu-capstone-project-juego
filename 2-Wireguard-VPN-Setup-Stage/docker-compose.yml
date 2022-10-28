@@ -10,8 +10,8 @@ services:
     environment:
         - PUID=1002 # ctf user's UID    
         - PGID=1003 # ctf group's GID
-        - TZ=America/Montreal # location of GCP servers
-        - SERVERURL=vpn.ctf.issessions.ca # VPN server public FQDN
+        - TZ=America/New_York # location of GCP servers
+        - SERVERURL=vpn.ctf.juego2022.com # VPN server public FQDN
         - SERVERPORT=51820 # VPN port
         - PEERS=1 # will create a client configuration called peer1.conf
         - PEERDNS=auto # use Google's DNS servers
