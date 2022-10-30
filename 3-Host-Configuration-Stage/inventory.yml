@@ -2,24 +2,24 @@ all:
   children:
     internal:
       hosts:
-        ctfd.int.ctf.issessions.ca: 
-        elk.int.ctf.issessions.ca:
+        ctfd.int.ctf.juego2022.com: 
+        elk.int.ctf.juego2022.com:
     dmz:
       hosts:
-        nginx.int.ctf.issessions.ca:
-        haproxy.int.ctf.issessions.ca:
+        nginx.int.ctf.juego2022.com:
+        haproxy.int.ctf.juego2022.com:
     elk:
       hosts:
-        elk.int.ctf.issessions.ca:
+        elk.int.ctf.juego2022.com:
     ctfd:
       hosts:
-        ctfd.int.ctf.issessions.ca:
+        ctfd.int.ctf.juego2022.com:
     nginx:
       hosts:
-        nginx.int.ctf.issessions.ca:
+        nginx.int.ctf.juego2022.com:
     haproxy:
       hosts:
-        haproxy.int.ctf.issessions.ca:
+        haproxy.int.ctf.juego2022.com:
         
 
 

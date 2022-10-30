@@ -5,7 +5,7 @@ PUBLIC_DOMAIN="juego2022.com"
 PUBLIC_CTF_SUBDOMAIN="ctf"
 
 # Region & Zone
-GCP_PROJECT_ID="cp-juego-ctf-2022"
+GCP_PROJECT_ID="juego-ctf-2022-cp"
 GCP_REGION="northamerica-northeast1"
 GCP_ZONE="northamerica-northeast1-a"
 
