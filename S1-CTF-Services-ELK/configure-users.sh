@@ -4,7 +4,7 @@
 set -a; source .env; set +a
 
 # ELK Host Internal FQDN
-ES_HOST=elk.int.ctf.issessions.ca
+ES_HOST=elk.int.ctf.juego2022.com
 
 # Set the password of the kibana_system user using the Elasticsearch security API
 curl -k -XPOST -u elastic:"${BOOTSTRAP_ELASTIC_PASSWORD}" \

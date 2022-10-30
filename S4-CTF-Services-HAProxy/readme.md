@@ -61,7 +61,7 @@ During service deployment, Ansible uses the `lpass` commandline utility to retri
 ### Pre-Deployment Configuration Checklist
 1. Generate secrets related to HAProxy and store them in a LastPass password vault (See "Important Accounts, Credentials, and Secrets" above.)
 2. Edit `haproxy/haproxy.cfg` with:
-    1. The FQDN and port of the statistics panel under `listen stats` block. Ex: `haproxy.int.ctf.issessions.ca:8080`
+    1. The FQDN and port of the statistics panel under `listen stats` block. Ex: `haproxy.int.ctf.juego2022.com:8080`
     2. A `frontend` for each TCP-based challenge you plan to deploy.
     3. The FQDN of each backend Kubernetes node under `backend hosted-challenges-cluster`.
 

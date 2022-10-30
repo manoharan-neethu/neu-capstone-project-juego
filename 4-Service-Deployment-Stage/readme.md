@@ -89,24 +89,24 @@ all:
   children:
     internal:
       hosts:
-        ctfd.int.ctf.issessions.ca: 
-        elk.int.ctf.issessions.ca: 
+        ctfd.int.ctf.juego2022.com: 
+        elk.int.ctf.juego2022.com: 
     dmz:
       hosts:
-        nginx.int.ctf.issessions.ca: 
-        haproxy.int.ctf.issessions.ca: 
+        nginx.int.ctf.juego2022.com: 
+        haproxy.int.ctf.juego2022.com: 
     elk:
       hosts:
-        elk.int.ctf.issessions.ca:
+        elk.int.ctf.juego2022.com:
     ctfd:
       hosts:
-        ctfd.int.ctf.issessions.ca: 
+        ctfd.int.ctf.juego2022.com: 
     nginx:
       hosts:
-        nginx.int.ctf.issessions.ca:
+        nginx.int.ctf.juego2022.com:
     haproxy:
       hosts:
-        haproxy.int.ctf.issessions.ca:
+        haproxy.int.ctf.juego2022.com:
   vars:
     chikp_git_repo_name: Chik-p           # change me
     chikp_git_repo_owner: abboudl         # change me
@@ -121,8 +121,8 @@ First, edit the variables at the top of `1-generate-cert-bundles.yml`:
 ```
 - hosts: localhost
   vars:
-    ca_common_name: "ca.int.ctf.issessions.ca"     # change me
-    elk_internal_fqdn: "elk.int.ctf.issessions.ca" # change me
+    ca_common_name: "ca.int.ctf.juego2022.com"     # change me
+    elk_internal_fqdn: "elk.int.ctf.juego2022.com" # change me
     elk_private_ip: "10.10.20.51"                  # change me
 ```
 
@@ -139,8 +139,8 @@ Certificates bundles are written to a `./tls` in the current directory (local gi
 We also require a TLS certificate to secure communication between the scoreboard and the CTF participant's browser. If Cloudflare manages your public DNS zone, the `2-request-letsencrypt-cert-cloudflare.yml` Ansible playbook can request a certificate for you. It uses certbot's cloudflare plugin coupled with a Cloudflare API token to automate the process of requesting the certificate. Edit the `public_ctfd_fqdn` and `letsencrypt_email` at the beginning of the playbook:
 ```
   vars:
-    public_ctfd_fqdn: "ctf.issessions.ca"                              # change me
-    letsencrypt_email: "abboudl@example.ca"                            # change me
+    public_ctfd_fqdn: "ctf.juego2022.com"                                         # change me
+    letsencrypt_email: "neuteamserrucho2022@gmail.com"                            # change me
     letsencrypt_config_dir: "./tls/nginx-letsencrypt-tls/config/"
     letsencrypt_work_dir: "./tls/nginx-letsencrypt-tls/work/"
     letsencrypt_logs_dir: "./tls/nginx-letsencrypt-tls/log/"
@@ -179,8 +179,8 @@ chmod 700 run-all-playbooks.sh
 ## Next Steps
 
 The Infrastructure Build Process is complete. 
-1. Verify that you can connect to CTFd in a browser. Using the current configuration as an example, we would visit `https://ctf.issessions.ca`.
-2. Verify that you can connect to Kibana in a browser while connected to the VPN. Using the current configuration as an example, we would visit `https://elk.int.ctf.issessions.ca:5601`.
+1. Verify that you can connect to CTFd in a browser. Using the current configuration as an example, we would visit `https://ctf.juego2022.com`.
+2. Verify that you can connect to Kibana in a browser while connected to the VPN. Using the current configuration as an example, we would visit `https://elk.int.ctf.juego2022.com:5601`.
 
 Now it's time for application configuration. Go to each service's dedicated folder and complete the steps under **Post-Deployment Configuration Checklist** to prepare each individual service for game day.
 

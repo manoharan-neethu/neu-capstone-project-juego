@@ -37,7 +37,7 @@ Unfortunately, this property means that at this time, the services in this repos
 
 ### Logstash Pipeline
 
-In the interest of keeping this repository unopinionated, we do not make assumptions about the type or format of the data you choose to ingest from CTFd or how you choose to process this data. We do, however, provide the pipeline used in ISSessionsCTF2021 as an example [here](logstash/example-pipeline/ctf2021-logstash.conf).
+In the interest of keeping this repository unopinionated, we do not make assumptions about the type or format of the data you choose to ingest from CTFd or how you choose to process this data. We do, however, provide the pipeline used in juego2022CTF2021 as an example [here](logstash/example-pipeline/ctf2021-logstash.conf).
 
 The pipeline in logstash.conf, however, does process the access and error logs it receives from Nginx as the format of these logs is well-known.
 

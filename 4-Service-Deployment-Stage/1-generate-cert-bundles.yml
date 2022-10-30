@@ -1,7 +1,7 @@
 - hosts: localhost
   vars:
-    ca_common_name: "ca.int.ctf.issessions.ca"
-    elk_internal_fqdn: "elk.int.ctf.issessions.ca"
+    ca_common_name: "ca.int.ctf.juego2022.com"
+    elk_internal_fqdn: "elk.int.ctf.juego2022.com"
     elk_private_ip: "10.10.20.51"
   
   tasks:

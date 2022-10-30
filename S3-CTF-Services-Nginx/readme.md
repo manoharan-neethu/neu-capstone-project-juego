@@ -50,11 +50,11 @@ None.
 
 ### Pre-Deployment Configuration Checklist
 Edit the following parameters in `nginx/nginx.conf`. Edits must be consistent with the parameters you passed in `config.sh`.
-1. The FQDN and port of the backend web server hosting CTFd in the `upstream` block. Ex: `ctfd.int.ctf.issessions.ca:8000`
-2. CTFd's public domain name in the second `server` block (i.e. the HTTPS block). Ex: `ctf.issessions.ca` and `www.ctf.issessions.ca`
+1. The FQDN and port of the backend web server hosting CTFd in the `upstream` block. Ex: `ctfd.int.ctf.juego2022.com:8000`
+2. CTFd's public domain name in the second `server` block (i.e. the HTTPS block). Ex: `ctf.juego2022.com` and `www.ctf.juego2022.com`
 3. The path to your letsencypt certificate and private key next `ssl_certificate` and `ssl_certificate_key`, respectively.
-    1. Ex Certificate: `ssl_certificate /etc/letsencrypt/live/ctf.issessions.ca/fullchain.pem;`
-    2. Ex Private Key: `ssl_certificate_key /etc/letsencrypt/live/ctf.issessions.ca/privkey.pem;`  
+    1. Ex Certificate: `ssl_certificate /etc/letsencrypt/live/ctf.juego2022.com/fullchain.pem;`
+    2. Ex Private Key: `ssl_certificate_key /etc/letsencrypt/live/ctf.juego2022.com/privkey.pem;`  
 
 ## Post-Deployment Configuration Checklist
 None.
