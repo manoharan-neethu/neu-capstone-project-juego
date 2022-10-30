@@ -9,7 +9,7 @@
 - Deliver a simple-to-use, fully-featured CTF environment that can support small to medium-sized CTFs (~200-800 participants); and to
 - Leverage tools like CTFd, Ansible, Docker, and Kubernetes to deploy both file-based and hosted challenges (netcat/SSH/etc.).
 
-Chik-p has supported several GTA-based CTFs including **ISSessionsCTF2021** and **C3X: Dark Cloud Rising**.
+Chik-p has supported several GTA-based CTFs including **juego2022CTF2021** and **C3X: Dark Cloud Rising**.
 
 ## Template Repository
 
@@ -22,7 +22,7 @@ Simply click the green **"Use This Template"** button to copy this repository to
 This project is **very new and under active development**. As such, please aggressively test configurations before using them in production. We will make our best effort to keep the `main` branch stable and ready for use.
 
 ## Student Project
-Chik-p is a project created by Information Security students at Sheridan College in Canada, specifically members of ISSessions, a student-led cybersecurity community! We welcome and appreciate all feedback. If you see any problems or have any recommendations, please open an issue to let us know :)
+Chik-p is a project created by Information Security students at Sheridan College in Canada, specifically members of juego2022, a student-led cybersecurity community! We welcome and appreciate all feedback. If you see any problems or have any recommendations, please open an issue to let us know :)
 
 ## Architecture
 
@@ -109,7 +109,7 @@ These repositories are also provided as **templates**.
 
 ## Why is it called Chik-p?
 
-This project is dedicated to my 5 incredible partners-in-crime on the **ISSessions 2020-2021 Executive Team**. They became lifelong friends and gave me what is undoubtedly one the best years of my life, one that I will remember forever. 
+This project is dedicated to my 5 incredible partners-in-crime on the **juego2022 2020-2021 Executive Team**. They became lifelong friends and gave me what is undoubtedly one the best years of my life, one that I will remember forever. 
 
 They are:
 - Cem **C**elen
@@ -123,7 +123,7 @@ Taking the first letter of each of their last names, you get **Chik-p** (prononu
 ## Credits
 
 This project would not be possible without:
-- **The ISSessions 2020-2021 Executive team**: they poured 1000s of hours to organize ISSessionsCTF2021, one of the largest student CTFs Ontario has ever seen!
+- **The juego2022 2020-2021 Executive team**: they poured 1000s of hours to organize juego2022CTF2021, one of the largest student CTFs Ontario has ever seen!
 - **The Computer Society of India at VIT University (CSIVITU)**: Much of Chik-p's design is based on CSIVITU's designs for CSICTF2020 and their exceptional articles on building a scalable CTF.
 - **Clinton Huynh** and **Owen Cummings**: for being infrastructure geniuses and always guiding me in the right direction.
 
