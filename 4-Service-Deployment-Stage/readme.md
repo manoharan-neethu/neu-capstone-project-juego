@@ -108,8 +108,8 @@ all:
       hosts:
         haproxy.int.ctf.juego2022.com:
   vars:
-    chikp_git_repo_name: Chik-p           # change me
-    chikp_git_repo_owner: abboudl         # change me
+    chikp_git_repo_name: neu-capstone-project-juego           # change me
+    chikp_git_repo_owner: manoharan-neethu                    # change me
 
 ```
 

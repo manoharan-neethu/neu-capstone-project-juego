@@ -1,7 +1,7 @@
 - hosts: localhost
   vars:
     public_ctfd_fqdn: "ctf.juego2022.com"
-    letsencrypt_email: "abboudl@sheridancollege.ca"
+    letsencrypt_email: "neuteamserrucho2022@gmail.com"
     letsencrypt_config_dir: "./tls/nginx-letsencrypt-tls/config/"
     letsencrypt_work_dir: "./tls/nginx-letsencrypt-tls/work/"
     letsencrypt_logs_dir: "./tls/nginx-letsencrypt-tls/log/"
