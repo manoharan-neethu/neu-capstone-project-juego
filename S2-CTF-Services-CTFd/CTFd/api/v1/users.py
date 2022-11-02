@@ -339,8 +339,7 @@ class UserPrivateSolves(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
-        count = len(response.data)
-        return {"success": True, "data": response.data, "meta": {"count": count}}
+        return {"success": True, "data": response.data}
 
 
 @users_namespace.route("/me/fails")
@@ -351,20 +350,16 @@ class UserPrivateFails(Resource):
         fails = user.get_fails(admin=True)
 
         view = "user" if not is_admin() else "admin"
+        response = SubmissionSchema(view=view, many=True).dump(fails)
+        if response.errors:
+            return {"success": False, "errors": response.errors}, 400
 
-        # We want to return the count purely for stats & graphs
-        # but this data isn't really needed by the end user.
-        # Only actually show fail data for admins.
         if is_admin():
-            response = SubmissionSchema(view=view, many=True).dump(fails)
-            if response.errors:
-                return {"success": False, "errors": response.errors}, 400
-
             data = response.data
         else:
             data = []
+        count = len(response.data)
 
-        count = len(fails)
         return {"success": True, "data": data, "meta": {"count": count}}
 
 
@@ -382,8 +377,7 @@ class UserPrivateAwards(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
-        count = len(response.data)
-        return {"success": True, "data": response.data, "meta": {"count": count}}
+        return {"success": True, "data": response.data}
 
 
 @users_namespace.route("/<user_id>/solves")
@@ -405,8 +399,7 @@ class UserPublicSolves(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
-        count = len(response.data)
-        return {"success": True, "data": response.data, "meta": {"count": count}}
+        return {"success": True, "data": response.data}
 
 
 @users_namespace.route("/<user_id>/fails")
@@ -422,20 +415,16 @@ class UserPublicFails(Resource):
         fails = user.get_fails(admin=is_admin())
 
         view = "user" if not is_admin() else "admin"
+        response = SubmissionSchema(view=view, many=True).dump(fails)
+        if response.errors:
+            return {"success": False, "errors": response.errors}, 400
 
-        # We want to return the count purely for stats & graphs
-        # but this data isn't really needed by the end user.
-        # Only actually show fail data for admins.
         if is_admin():
-            response = SubmissionSchema(view=view, many=True).dump(fails)
-            if response.errors:
-                return {"success": False, "errors": response.errors}, 400
-
             data = response.data
         else:
             data = []
+        count = len(response.data)
 
-        count = len(fails)
         return {"success": True, "data": data, "meta": {"count": count}}
 
 
@@ -457,8 +446,7 @@ class UserPublicAwards(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
-        count = len(response.data)
-        return {"success": True, "data": response.data, "meta": {"count": count}}
+        return {"success": True, "data": response.data}
 
 
 @users_namespace.route("/<int:user_id>/email")
@@ -489,10 +477,4 @@ class UserEmails(Resource):
 
         result, response = sendmail(addr=user.email, text=text)
 
-        if result is True:
-            return {"success": True}
-        else:
-            return (
-                {"success": False, "errors": {"": [response]}},
-                400,
-            )
+        return {"success": result}

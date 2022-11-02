@@ -73,13 +73,7 @@ def check_challenge_visibility(f):
                 return f(*args, **kwargs)
             else:
                 if authed():
-                    if request.content_type == "application/json":
-                        abort(403)
-                    else:
-                        abort(
-                            403,
-                            description="Challenge Visibility is set to Admins Only",
-                        )
+                    abort(403)
                 else:
                     return redirect(url_for("auth.login", next=request.full_path))
 

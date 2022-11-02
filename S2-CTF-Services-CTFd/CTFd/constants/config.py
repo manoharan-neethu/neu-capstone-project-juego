@@ -76,10 +76,7 @@ class _ConfigsWrapper:
 
     @property
     def theme_settings(self):
-        try:
-            return json.loads(get_config("theme_settings", default="null"))
-        except json.JSONDecodeError:
-            return {"error": "invalid theme_settings"}
+        return json.loads(get_config("theme_settings", default="null"))
 
     @property
     def tos_or_privacy(self):

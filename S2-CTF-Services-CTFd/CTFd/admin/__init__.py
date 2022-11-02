@@ -1,12 +1,11 @@
 import csv
 import datetime
 import os
-from io import StringIO
+from io import BytesIO, StringIO
 
 from flask import Blueprint, abort
 from flask import current_app as app
 from flask import (
-    jsonify,
     redirect,
     render_template,
     render_template_string,
@@ -40,13 +39,14 @@ from CTFd.models import (
     Unlocks,
     Users,
     db,
+    get_class_by_tablename,
 )
 from CTFd.utils import config as ctf_config
 from CTFd.utils import get_config, set_config
-from CTFd.utils.csv import dump_csv, load_challenges_csv, load_teams_csv, load_users_csv
 from CTFd.utils.decorators import admins_only
-from CTFd.utils.exports import background_import_ctf
 from CTFd.utils.exports import export_ctf as export_ctf_util
+from CTFd.utils.exports import import_ctf as import_ctf_util
+from CTFd.utils.helpers import get_errors
 from CTFd.utils.security.auth import logout_user
 from CTFd.utils.uploads import delete_file
 from CTFd.utils.user import is_admin
@@ -87,25 +87,21 @@ def plugin(plugin):
         return "1"
 
 
-@admin.route("/admin/import", methods=["GET", "POST"])
+@admin.route("/admin/import", methods=["POST"])
 @admins_only
 def import_ctf():
-    if request.method == "GET":
-        start_time = cache.get("import_start_time")
-        end_time = cache.get("import_end_time")
-        import_status = cache.get("import_status")
-        import_error = cache.get("import_error")
-        return render_template(
-            "admin/import.html",
-            start_time=start_time,
-            end_time=end_time,
-            import_status=import_status,
-            import_error=import_error,
-        )
-    elif request.method == "POST":
-        backup = request.files["backup"]
-        background_import_ctf(backup)
-        return redirect(url_for("admin.import_ctf"))
+    backup = request.files["backup"]
+    errors = get_errors()
+    try:
+        import_ctf_util(backup)
+    except Exception as e:
+        print(e)
+        errors.append(repr(e))
+
+    if errors:
+        return errors[0], 500
+    else:
+        return redirect(url_for("admin.config"))
 
 
 @admin.route("/admin/export", methods=["GET", "POST"])
@@ -113,41 +109,11 @@ def import_ctf():
 def export_ctf():
     backup = export_ctf_util()
     ctf_name = ctf_config.ctf_name()
-    day = datetime.datetime.now().strftime("%Y-%m-%d_%T")
+    day = datetime.datetime.now().strftime("%Y-%m-%d")
     full_name = u"{}.{}.zip".format(ctf_name, day)
     return send_file(
         backup, cache_timeout=-1, as_attachment=True, attachment_filename=full_name
     )
-
-
-@admin.route("/admin/import/csv", methods=["POST"])
-@admins_only
-def import_csv():
-    csv_type = request.form["csv_type"]
-    # Try really hard to load data in properly no matter what nonsense Excel gave you
-    raw = request.files["csv_file"].stream.read()
-    try:
-        csvdata = raw.decode("utf-8-sig")
-    except UnicodeDecodeError:
-        try:
-            csvdata = raw.decode("cp1252")
-        except UnicodeDecodeError:
-            csvdata = raw.decode("latin-1")
-    csvfile = StringIO(csvdata)
-
-    loaders = {
-        "challenges": load_challenges_csv,
-        "users": load_users_csv,
-        "teams": load_teams_csv,
-    }
-
-    loader = loaders[csv_type]
-    reader = csv.DictReader(csvfile)
-    success = loader(reader)
-    if success is True:
-        return redirect(url_for("admin.config"))
-    else:
-        return jsonify(success), 500
 
 
 @admin.route("/admin/export/csv")
@@ -155,7 +121,31 @@ def import_csv():
 def export_csv():
     table = request.args.get("table")
 
-    output = dump_csv(name=table)
+    # TODO: It might make sense to limit dumpable tables. Config could potentially leak sensitive information.
+    model = get_class_by_tablename(table)
+    if model is None:
+        abort(404)
+
+    temp = StringIO()
+    writer = csv.writer(temp)
+
+    header = [column.name for column in model.__mapper__.columns]
+    writer.writerow(header)
+
+    responses = model.query.all()
+
+    for curr in responses:
+        writer.writerow(
+            [getattr(curr, column.name) for column in model.__mapper__.columns]
+        )
+
+    temp.seek(0)
+
+    # In Python 3 send_file requires bytes
+    output = BytesIO()
+    output.write(temp.getvalue().encode("utf-8"))
+    output.seek(0)
+    temp.close()
 
     return send_file(
         output,
@@ -177,12 +167,7 @@ def config():
     configs = {c.key: get_config(c.key) for c in configs}
 
     themes = ctf_config.get_themes()
-
-    # Remove current theme but ignore failure
-    try:
-        themes.remove(get_config("ctf_theme"))
-    except ValueError:
-        pass
+    themes.remove(get_config("ctf_theme"))
 
     return render_template("admin/config.html", themes=themes, **configs)
 

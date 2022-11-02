@@ -186,14 +186,7 @@ class TeamSchema(ma.ModelSchema):
             current_team = get_current_team()
             current_user = get_current_user()
             if current_team.captain_id == current_user.id:
-                captain = Users.query.filter_by(id=captain_id).first()
-                if captain in current_team.members:
-                    return
-                else:
-                    raise ValidationError(
-                        "Only team members can be promoted to captain",
-                        field_names=["captain_id"],
-                    )
+                return
             else:
                 raise ValidationError(
                     "Only the captain can change team captain",
@@ -259,24 +252,21 @@ class TeamSchema(ma.ModelSchema):
                 # # Check that we have an existing field for this. May be unnecessary b/c the foriegn key should enforce
                 field = TeamFields.query.filter_by(id=field_id).first_or_404()
 
-                # Get the existing field entry if one exists
-                entry = TeamFieldEntries.query.filter_by(
-                    field_id=field.id, team_id=current_team.id
-                ).first()
+                if field.required is True and value.strip() == "":
+                    raise ValidationError(
+                        f"Field '{field.name}' is required", field_names=["fields"]
+                    )
 
-                if field.required is True:
-                    if isinstance(value, str):
-                        if value.strip() == "":
-                            raise ValidationError(
-                                f"Field '{field.name}' is required",
-                                field_names=["fields"],
-                            )
-
-                if field.editable is False and entry is not None:
+                if field.editable is False:
                     raise ValidationError(
                         f"Field '{field.name}' cannot be editted",
                         field_names=["fields"],
                     )
+
+                # Get the existing field entry if one exists
+                entry = TeamFieldEntries.query.filter_by(
+                    field_id=field.id, team_id=current_team.id
+                ).first()
 
                 if entry:
                     f["id"] = entry.id
