@@ -6,7 +6,8 @@ FROM nginx:${NGINX_VERSION}
 RUN sudo -i
 RUN apt update && apt upgrade -y && \
     apt install -y bzip2 && \
-    mkdir -p /etc/letsencrypt
+    mkdir -p /etc/letsencrypt \ 
+    mkdir -p /etc/nginx
 
 # Copy NGINX configuration file
 COPY ./nginx.conf /etc/nginx/
