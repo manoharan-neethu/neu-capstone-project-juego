@@ -11,6 +11,7 @@ RUN apt-get update \
         libffi-dev \
         libssl-dev \
         git \
+        gevent \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
