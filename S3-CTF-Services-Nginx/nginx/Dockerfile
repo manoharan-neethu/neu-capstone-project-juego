@@ -3,6 +3,7 @@ ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
 # Prepare environment
+RUN sudo -i
 RUN apt update && apt upgrade -y && \
     apt install -y bzip2 && \
     mkdir -p /etc/letsencrypt
