@@ -4,6 +4,7 @@ from flask import Blueprint, abort
 from flask import current_app as app
 from flask import redirect, render_template, request, send_file, session, url_for
 from flask.helpers import safe_join
+from jinja2.exceptions import TemplateNotFound
 from sqlalchemy.exc import IntegrityError
 
 from CTFd.cache import cache
@@ -28,8 +29,8 @@ from CTFd.models import (
 from CTFd.utils import config, get_config, set_config
 from CTFd.utils import user as current_user
 from CTFd.utils import validators
-from CTFd.utils.config import is_setup
-from CTFd.utils.config.pages import build_html, get_page
+from CTFd.utils.config import is_setup, is_teams_mode
+from CTFd.utils.config.pages import build_markdown, get_page
 from CTFd.utils.config.visibility import challenges_visible
 from CTFd.utils.dates import ctf_ended, ctftime, view_after_ctf
 from CTFd.utils.decorators import authed_only
@@ -43,6 +44,7 @@ from CTFd.utils.email import (
     DEFAULT_VERIFICATION_EMAIL_BODY,
     DEFAULT_VERIFICATION_EMAIL_SUBJECT,
 )
+from CTFd.utils.health import check_config, check_database
 from CTFd.utils.helpers import get_errors, get_infos, markup
 from CTFd.utils.modes import USERS_MODE
 from CTFd.utils.security.auth import login_user
@@ -55,7 +57,7 @@ from CTFd.utils.security.signing import (
     unserialize,
 )
 from CTFd.utils.uploads import get_uploader, upload_file
-from CTFd.utils.user import authed, get_current_user, is_admin
+from CTFd.utils.user import authed, get_current_team, get_current_user, is_admin
 
 views = Blueprint("views", __name__)
 
@@ -256,7 +258,12 @@ def setup():
                 cache.clear()
 
             return redirect(url_for("views.static_html"))
-        return render_template("setup.html", state=serialize(generate_nonce()))
+        try:
+            return render_template("setup.html", state=serialize(generate_nonce()))
+        except TemplateNotFound:
+            # Set theme to default and try again
+            set_config("ctf_theme", DEFAULT_THEME)
+            return render_template("setup.html", state=serialize(generate_nonce()))
     return redirect(url_for("views.static_html"))
 
 
@@ -298,6 +305,7 @@ def notifications():
 @authed_only
 def settings():
     infos = get_infos()
+    errors = get_errors()
 
     user = get_current_user()
     name = user.name
@@ -305,6 +313,14 @@ def settings():
     website = user.website
     affiliation = user.affiliation
     country = user.country
+
+    if is_teams_mode() and get_current_team() is None:
+        team_url = url_for("teams.private")
+        infos.append(
+            markup(
+                f'In order to participate you must either <a href="{team_url}">join or create a team</a>.'
+            )
+        )
 
     tokens = UserTokens.query.filter_by(user_id=user.id).all()
 
@@ -330,6 +346,7 @@ def settings():
         tokens=tokens,
         prevent_name_change=prevent_name_change,
         infos=infos,
+        errors=errors,
     )
 
 
@@ -348,7 +365,7 @@ def static_html(route):
         if page.auth_required and authed() is False:
             return redirect(url_for("auth.login", next=request.full_path))
 
-        return render_template("page.html", content=page.content)
+        return render_template("page.html", content=page.html, title=page.title)
 
 
 @views.route("/tos")
@@ -358,7 +375,7 @@ def tos():
     if tos_url:
         return redirect(tos_url)
     elif tos_text:
-        return render_template("page.html", content=build_html(tos_text))
+        return render_template("page.html", content=build_markdown(tos_text))
     else:
         abort(404)
 
@@ -370,7 +387,7 @@ def privacy():
     if privacy_url:
         return redirect(privacy_url)
     elif privacy_text:
-        return render_template("page.html", content=build_html(privacy_text))
+        return render_template("page.html", content=build_markdown(privacy_text))
     else:
         abort(404)
 
@@ -393,8 +410,17 @@ def files(path):
                     else:
                         abort(403)
         else:
+            # User cannot view challenges based on challenge visibility
+            # e.g. ctf requires registration but user isn't authed or
+            # ctf requires admin account but user isn't admin
             if not ctftime():
-                abort(403)
+                # It's not CTF time. The only edge case is if the CTF is ended
+                # but we have view_after_ctf enabled
+                if ctf_ended() and view_after_ctf():
+                    pass
+                else:
+                    # In all other situations we should block challenge files
+                    abort(403)
 
             # Allow downloads if a valid token is provided
             token = request.args.get("token", "")
@@ -459,3 +485,32 @@ def themes(theme, path):
         if os.path.isfile(cand_path):
             return send_file(cand_path)
     abort(404)
+
+
+@views.route("/themes/<theme>/static/<path:path>")
+def themes_beta(theme, path):
+    """
+    This is a copy of the above themes route used to avoid
+    the current appending of .dev and .min for theme assets.
+
+    In CTFd 4.0 this url_for behavior and this themes_beta
+    route will be removed.
+    """
+    for cand_path in (
+        safe_join(app.root_path, "themes", cand_theme, "static", path)
+        # The `theme` value passed in may not be the configured one, e.g. for
+        # admin pages, so we check that first
+        for cand_theme in (theme, *config.ctf_theme_candidates())
+    ):
+        if os.path.isfile(cand_path):
+            return send_file(cand_path)
+    abort(404)
+
+
+@views.route("/healthcheck")
+def healthcheck():
+    if check_database() is False:
+        return "ERR", 500
+    if check_config() is False:
+        return "ERR", 500
+    return "OK", 200

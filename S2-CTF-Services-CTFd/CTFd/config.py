@@ -1,6 +1,7 @@
 import configparser
 import os
 from distutils.util import strtobool
+from typing import Union
 
 
 class EnvInterpolation(configparser.BasicInterpolation):
@@ -173,12 +174,14 @@ class ServerConfig(object):
 
         AWS_S3_ENDPOINT_URL: str = empty_str_cast(config_ini["uploads"]["AWS_S3_ENDPOINT_URL"])
 
+        AWS_S3_REGION: str = empty_str_cast(config_ini["uploads"]["AWS_S3_REGION"])
+
     # === OPTIONAL ===
-    REVERSE_PROXY: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["REVERSE_PROXY"], default=False))
+    REVERSE_PROXY: Union[str, bool] = empty_str_cast(config_ini["optional"]["REVERSE_PROXY"], default=False)
 
     TEMPLATES_AUTO_RELOAD: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["TEMPLATES_AUTO_RELOAD"], default=True))
 
-    THEME_FALLBACK: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["THEME_FALLBACK"], default=False))
+    THEME_FALLBACK: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["THEME_FALLBACK"], default=True))
 
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["SQLALCHEMY_TRACK_MODIFICATIONS"], default=False))
 
@@ -193,6 +196,8 @@ class ServerConfig(object):
     SERVER_SENT_EVENTS: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["SERVER_SENT_EVENTS"], default=True))
 
     HTML_SANITIZATION: bool = process_boolean_str(empty_str_cast(config_ini["optional"]["HTML_SANITIZATION"], default=False))
+
+    SAFE_MODE: bool = process_boolean_str(empty_str_cast(config_ini["optional"].get("SAFE_MODE", False), default=False))
 
     if DATABASE_URL.startswith("sqlite") is False:
         SQLALCHEMY_ENGINE_OPTIONS = {

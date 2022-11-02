@@ -12,17 +12,9 @@ from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessRespon
 from CTFd.cache import clear_standings
 from CTFd.constants import RawEnum
 from CTFd.models import ChallengeFiles as ChallengeFilesModel
-from CTFd.models import (
-    Challenges,
-    Fails,
-    Flags,
-    Hints,
-    HintUnlocks,
-    Solves,
-    Submissions,
-    Tags,
-    db,
-)
+from CTFd.models import Challenges
+from CTFd.models import ChallengeTopics as ChallengeTopicsModel
+from CTFd.models import Fails, Flags, Hints, HintUnlocks, Solves, Submissions, Tags, db
 from CTFd.plugins.challenges import CHALLENGE_CLASSES, get_chal_class
 from CTFd.schemas.challenges import ChallengeSchema
 from CTFd.schemas.flags import FlagSchema
@@ -227,7 +219,9 @@ class ChallengeList(Resource):
                 and_(Challenges.state != "hidden", Challenges.state != "locked")
             )
         chal_q = (
-            chal_q.filter_by(**query_args).filter(*filters).order_by(Challenges.value)
+            chal_q.filter_by(**query_args)
+            .filter(*filters)
+            .order_by(Challenges.value, Challenges.id)
         )
 
         # Iterate through the list of challenges, adding to the object which
@@ -628,7 +622,8 @@ class ChallengeAttempt(Resource):
 
         # Anti-bruteforce / submitting Flags too quickly
         kpm = current_user.get_wrong_submissions_per_minute(user.account_id)
-        if kpm > 10:
+        kpm_limit = int(get_config("incorrect_submissions_per_min", default=10))
+        if kpm > kpm_limit:
             if ctftime():
                 chal_class.fail(
                     user=user, team=team, challenge=challenge, request=request
@@ -769,8 +764,13 @@ class ChallengeSolves(Resource):
 
         Model = get_model()
 
+        # Note that we specifically query for the Solves.account.name
+        # attribute here because it is faster than having SQLAlchemy
+        # query for the attribute directly and it's unknown what the
+        # affects of changing the relationship lazy attribute would be
         solves = (
-            Solves.query.join(Model, Solves.account_id == Model.id)
+            Solves.query.add_columns(Model.name.label("account_name"))
+            .join(Model, Solves.account_id == Model.id)
             .filter(
                 Solves.challenge_id == challenge_id,
                 Model.banned == False,
@@ -787,10 +787,12 @@ class ChallengeSolves(Resource):
                 solves = solves.filter(Solves.date < dt)
 
         for solve in solves:
+            # Seperate out the account name and the Solve object from the SQLAlchemy tuple
+            solve, account_name = solve
             response.append(
                 {
                     "account_id": solve.account_id,
-                    "name": solve.account.name,
+                    "name": account_name,
                     "date": isoformat(solve.date),
                     "account_url": generate_account_url(account_id=solve.account_id),
                 }
@@ -825,6 +827,26 @@ class ChallengeTags(Resource):
         for t in tags:
             response.append(
                 {"id": t.id, "challenge_id": t.challenge_id, "value": t.value}
+            )
+        return {"success": True, "data": response}
+
+
+@challenges_namespace.route("/<challenge_id>/topics")
+class ChallengeTopics(Resource):
+    @admins_only
+    def get(self, challenge_id):
+        response = []
+
+        topics = ChallengeTopicsModel.query.filter_by(challenge_id=challenge_id).all()
+
+        for t in topics:
+            response.append(
+                {
+                    "id": t.id,
+                    "challenge_id": t.challenge_id,
+                    "topic_id": t.topic_id,
+                    "value": t.topic.value,
+                }
             )
         return {"success": True, "data": response}
 

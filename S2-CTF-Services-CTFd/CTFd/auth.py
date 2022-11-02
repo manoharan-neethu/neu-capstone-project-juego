@@ -1,7 +1,7 @@
 import base64
 
 import requests
-from flask import Blueprint
+from flask import Blueprint, abort
 from flask import current_app as app
 from flask import redirect, render_template, request, session, url_for
 from itsdangerous.exc import BadSignature, BadTimeSignature, SignatureExpired
@@ -197,6 +197,7 @@ def register():
         website = request.form.get("website")
         affiliation = request.form.get("affiliation")
         country = request.form.get("country")
+        registration_code = str(request.form.get("registration_code", ""))
 
         name_len = len(name) == 0
         names = Users.query.add_columns("name", "id").filter_by(name=name).first()
@@ -209,6 +210,13 @@ def register():
         pass_long = len(password) > 128
         valid_email = validators.validate_email(email_address)
         team_name_email_check = validators.validate_email(name)
+
+        if get_config("registration_code"):
+            if (
+                registration_code.lower()
+                != str(get_config("registration_code", default="")).lower()
+            ):
+                errors.append("The registration code you entered was incorrect")
 
         # Process additional user fields
         fields = {}
@@ -366,6 +374,13 @@ def login():
             user = Users.query.filter_by(name=name).first()
 
         if user:
+            if user.password is None:
+                errors.append(
+                    "Your account was registered with a 3rd party authentication provider. "
+                    "Please try logging in with a configured authentication provider."
+                )
+                return render_template("login.html", errors=errors)
+
             if user and verify_password(request.form["password"], user.password):
                 session.regenerate()
 
@@ -497,12 +512,22 @@ def oauth_redirect():
                     )
                     return redirect(url_for("auth.login"))
 
-            if get_config("user_mode") == TEAMS_MODE:
+            if get_config("user_mode") == TEAMS_MODE and user.team_id is None:
                 team_id = api_data["team"]["id"]
                 team_name = api_data["team"]["name"]
 
                 team = Teams.query.filter_by(oauth_id=team_id).first()
                 if team is None:
+                    num_teams_limit = int(get_config("num_teams", default=0))
+                    num_teams = Teams.query.filter_by(
+                        banned=False, hidden=False
+                    ).count()
+                    if num_teams_limit and num_teams >= num_teams_limit:
+                        abort(
+                            403,
+                            description=f"Reached the maximum number of teams ({num_teams_limit}). Please join an existing team.",
+                        )
+
                     team = Teams(name=team_name, oauth_id=team_id, captain_id=user.id)
                     db.session.add(team)
                     db.session.commit()
