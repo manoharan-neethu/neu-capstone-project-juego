@@ -21,29 +21,29 @@
     register: ctfd_cert 
 
   - name: >- 
-      If cloudfare is our DNS provider, we will take advantage certbot's cloudflare plugin to 
+      If nginx is our DNS provider, we will take advantage certbot's nginx plugin to 
       request a letsencrypt certificate. To do this, we need a cloud API token that allows us to 
-      modify our public domain's DNS records. The token must be stored in a cloudfalre.ini 
-      file for certbot to use it. In this step, we generate the cloudflare.ini file from a 
-      template pulling the cloudflare API token from our LastPass vault.
+      modify our public domain's DNS records. The token must be stored in a nginx.ini 
+      file for certbot to use it. In this step, we generate the nginx.ini file from a 
+      template pulling the nginx API token from our LastPass vault.
     ansible.builtin.template:
-      src: ./templates/cloudflare-ini-template.j2
-      dest: ./cloudflare.ini
+      src: ./templates/nginx-ini-template.j2
+      dest: ./nginx.ini
       mode: '0600'
 
-  - name: If a certificate does not already exist, request a certificate using certbot's cloudflare plugin
-    command: "certbot certonly --dns-cloudflare --dns-cloudflare-credentials ./cloudflare.ini --non-interactive --config-dir {{ letsencrypt_config_dir }} --work-dir {{ letsencrypt_work_dir }} --logs-dir {{ letsencrypt_logs_dir }} --agree-tos --email {{ letsencrypt_email }} -d {{ public_ctfd_fqdn }} -d www.{{ public_ctfd_fqdn }}"
+  - name: If a certificate does not already exist, request a certificate using certbot's nginx plugin
+    command: "certbot certonly --nginx --non-interactive --config-dir {{ letsencrypt_config_dir }} --work-dir {{ letsencrypt_work_dir }} --logs-dir {{ letsencrypt_logs_dir }} --agree-tos --email {{ letsencrypt_email }} -d {{ public_ctfd_fqdn }} -d www.{{ public_ctfd_fqdn }}"
     register: certbot_request_output
     when: not ctfd_cert.stat.exists
 
   - name: If the certificate does already exist, try to renew it
-    command: "certbot renew --dns-cloudflare --dns-cloudflare-credentials ./cloudflare.ini --config-dir {{ letsencrypt_config_dir }} --work-dir {{ letsencrypt_work_dir }} --logs-dir {{ letsencrypt_logs_dir }}"
+    command: "certbot renew --nginx --config-dir {{ letsencrypt_config_dir }} --work-dir {{ letsencrypt_work_dir }} --logs-dir {{ letsencrypt_logs_dir }}"
     register: certbot_request_output
     when: ctfd_cert.stat.exists 
 
-  - name: delete generated cloudflare.ini file
+  - name: delete generated nginx.ini file
     ansible.builtin.file:
-      path: ./cloudflare.ini
+      path: ./nginx.ini
       state: absent
 
   - name: Compress nginx-letsencrypt-tls bundle

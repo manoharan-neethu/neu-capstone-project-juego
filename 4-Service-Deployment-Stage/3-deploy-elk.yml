@@ -13,6 +13,7 @@
         path: "/home/ctf/{{ chikp_git_repo_name }}" 
         owner: "ctf"
         group: "ctf"
+        mode: '0600'
         state: directory
         recurse: yes
 
