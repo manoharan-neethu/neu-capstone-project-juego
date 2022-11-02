@@ -15,7 +15,7 @@ curl -k -XPOST -u elastic:"${BOOTSTRAP_ELASTIC_PASSWORD}" \
   }
 EOF
 
-# Ensure that the kibana_system user is enabled
+# Ensure that the kibana_system user is enabled 
 curl -k -XPOST -u elastic:"${BOOTSTRAP_ELASTIC_PASSWORD}" \
   -H "Content-Type: application/json" \
   https://"$ES_HOST":9200/_security/user/kibana_system/_enable
