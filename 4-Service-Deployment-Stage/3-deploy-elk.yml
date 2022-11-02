@@ -9,14 +9,14 @@
         force: yes
         accept_hostkey: yes
 
-    - name: Set permissions of Chikp repository to those of the ctf account.
-      file:
-        path: "/home/ctf/{{ chikp_git_repo_name }}" 
-        owner: "ctf"
-        group: "ctf"
-        mode: '0600'
-        state: directory
-        recurse: yes
+    # - name: Set permissions of Chikp repository to those of the ctf account.
+    #   file:
+    #     path: "/home/ctf/{{ chikp_git_repo_name }}" 
+    #     owner: "ctf"
+    #     group: "ctf"
+    #     mode: '0600'
+    #     state: directory
+    #     recurse: yes
 
     - name: >-
         Transfer secrets file containing ELK secrets. Before transfer, pull all secrets 
