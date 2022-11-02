@@ -6,6 +6,7 @@
       git:
         repo: "git@github.com:{{ chikp_git_repo_owner }}/{{ chikp_git_repo_name }}.git"
         dest: "/home/ctf/{{ chikp_git_repo_name }}"
+        force: yes
         accept_hostkey: yes
 
     - name: Set permissions of Chikp repository to those of the ctf account.
