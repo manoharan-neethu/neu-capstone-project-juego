@@ -8,6 +8,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv*
+.venv*
 build/
 develop-eggs/
 dist/
@@ -66,7 +68,6 @@ CTFd/uploads
 .data/
 .ctfd_secret_key
 .*.swp
-.env
 
 # Vagrant
 .vagrant

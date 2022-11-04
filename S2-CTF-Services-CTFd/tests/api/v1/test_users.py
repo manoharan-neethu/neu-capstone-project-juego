@@ -14,6 +14,7 @@ from tests.helpers import (
     gen_challenge,
     gen_fail,
     gen_solve,
+    gen_team,
     gen_user,
     login_as_user,
     register_user,
@@ -893,7 +894,9 @@ def test_api_user_send_email():
             r = admin.post(
                 "/api/v1/users/2/email", json={"text": "email should be accepted"}
             )
-            assert r.status_code == 200
+            # Email should go through but since we aren't mocking
+            # the server we get a Connection refused error
+            assert r.status_code == 400
 
     destroy_ctfd(app)
 
@@ -918,4 +921,21 @@ def test_api_user_get_schema():
             assert sorted(data.keys()) == sorted(
                 UserSchema.views["user"] + ["score", "place"]
             )
+    destroy_ctfd(app)
+
+
+def test_api_user_patch_team_id():
+    """Users can't patch their team_id directly"""
+    app = create_ctfd()
+    with app.app_context():
+        register_user(app)
+        gen_team(app.db)
+
+        with login_as_user(app) as client:
+            data = {
+                "team_id": 1,
+            }
+            r = client.patch("/api/v1/users/me", json=data)
+            data = r.get_json()
+            assert data["data"]["team_id"] is None
     destroy_ctfd(app)

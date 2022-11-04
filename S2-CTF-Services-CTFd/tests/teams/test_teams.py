@@ -69,6 +69,10 @@ def test_hidden_teams_visibility():
 
             r = client.get("/teams")
             response = r.get_data(as_text=True)
+            # Only search in body content
+            body_start = response.find("<body>")
+            body_end = response.find("</body>")
+            response = response[body_start:body_end]
             assert team_name not in response
 
             r = client.get("/api/v1/teams")
@@ -79,6 +83,10 @@ def test_hidden_teams_visibility():
 
             r = client.get("/scoreboard")
             response = r.get_data(as_text=True)
+            # Only search in body content
+            body_start = response.find("<body>")
+            body_end = response.find("</body>")
+            response = response[body_start:body_end]
             assert team_name not in response
 
             r = client.get("/api/v1/scoreboard")
@@ -178,6 +186,40 @@ def test_team_size_limit():
             r = client.post("/teams/join", data=data)
             resp = r.get_data(as_text=True)
             assert len(Teams.query.filter_by(id=team_id).first().members) == 2
+    destroy_ctfd(app)
+
+
+def test_num_teams_limit():
+    """Only num_teams teams can be created"""
+    app = create_ctfd(user_mode="teams")
+    with app.app_context():
+        set_config("num_teams", 1)
+
+        # Create a team
+        gen_team(app.db, member_count=1)
+
+        register_user(app)
+        with login_as_user(app) as client:
+            r = client.get("/teams/new")
+            assert r.status_code == 403
+
+            # team should be blocked from creation
+            with client.session_transaction() as sess:
+                data = {
+                    "name": "team1",
+                    "password": "password",
+                    "nonce": sess.get("nonce"),
+                }
+            r = client.post("/teams/new", data=data)
+            resp = r.get_data(as_text=True)
+            assert Teams.query.count() == 1
+            assert "Reached the maximum number of teams" in resp
+
+            # Can the team be created after the num has been bumped
+            set_config("num_teams", 2)
+            r = client.post("/teams/new", data=data)
+            resp = r.get_data(as_text=True)
+            assert Teams.query.count() == 2
     destroy_ctfd(app)
 
 
