@@ -51,12 +51,7 @@ class CachingSessionInterface(SessionInterface):
     session_class = CachedSession
 
     def _generate_sid(self):
-        sid = str(uuid4())
-        v = cache.get(key=self.key_prefix + sid)
-        while v:
-            sid = str(uuid4())
-            v = cache.get(key=self.key_prefix + sid)
-        return sid
+        return str(uuid4())
 
     def __init__(self, key_prefix, use_signer=True, permanent=False):
         self.key_prefix = key_prefix

@@ -1,11 +1,6 @@
 {% extends "admin/base.html" %}
 
 {% block stylesheets %}
-<style>
-.CodeMirror {
-	height: 100%;
-}
-</style>
 {% endblock %}
 
 {% block content %}
@@ -24,8 +19,7 @@
 			</div>
 
 			{% set content = page.content if page is defined else "" %}
-			{% set format = page.format if page is defined %}
-			{% with form = Forms.pages.PageEditForm(content=content, format=format) %}
+			{% with form = Forms.pages.PageEditForm(content=content) %}
 			<form id="page-edit" method="POST">
 				<div class="form-group">
 					<div class="col-md-12">
@@ -51,16 +45,6 @@
 
 				<div class="form-group">
 					<div class="col-md-12">
-						<b>{{ form.format.label }}</b>
-						{{ form.format(class="form-control custom-select", placeholder="Route", value=format) }}
-						<small class="text-muted">
-							{{ form.format.description }}
-						</small>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="col-md-12">
 
 						<h3>Content</h3>
 						<small class="text-muted">This is the HTML content of your page</small>
@@ -76,7 +60,7 @@
 						</ul>
 
 						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane active" id="content-write" style="height:600px">
+							<div role="tabpanel" class="tab-pane active" id="content-write" style="height:400px">
 								<br>
 
 								<div class="form-inline">
@@ -112,27 +96,23 @@
 
 								<br>
 
-								<small class="form-text text-muted text-right">
-									<a href="https://docs.ctfd.io/docs/pages/variables/" target="_blank">CTFd Page variables</a>
-									<i class="far fa-question-circle pr-2"></i>
-								</small>
-
-								<div class="form-group h-100">
+								<div class="form-group">
 									{{ form.content(id="admin-pages-editor", class="d-none") }}
 								</div>
-
-								<div class="form-group float-right pt-3">
-									{{ form.nonce() }}
-									<button class="btn btn-primary" id="save-page">
-										Save
-									</button>
-								</div>
 							</div>
-							<div role="tabpanel" class="tab-pane content" id="content-preview">
+							<div role="tabpanel" class="tab-pane content" id="content-preview" style="height:400px">
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<div class="form-group float-right">
+					{{ form.nonce() }}
+					<button class="btn btn-primary" id="save-page">
+						Save
+					</button>
+				</div>
+
 			</form>
 			{% endwith %}
 		</div>

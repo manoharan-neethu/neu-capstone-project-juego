@@ -105,3 +105,4 @@ def upgrade(plugin_name=None, revision=None, lower="current"):
 
     # Set the new latest revision
     set_config(plugin_name + "_alembic_version", upper)
+    

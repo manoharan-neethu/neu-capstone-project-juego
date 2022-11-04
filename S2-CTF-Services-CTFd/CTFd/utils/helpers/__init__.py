@@ -29,12 +29,7 @@ def get_errors():
 
 @current_app.url_defaults
 def env_asset_url_default(endpoint, values):
-    """
-    Create asset URLs dependent on the current env
-
-    In CTFd 4.0 this url_for behavior and the themes_beta
-    route will be removed in favor of an improved theme system
-    """
+    """Create asset URLs dependent on the current env"""
     if endpoint == "views.themes":
         path = values.get("path", "")
         static_asset = path.endswith(".js") or path.endswith(".css")

@@ -92,9 +92,6 @@ SANITIZER.RequireNoFollowOnLinks(True)
 SANITIZER.RequireNoReferrerOnFullyQualifiedLinks(True)
 SANITIZER.RequireNoReferrerOnLinks(True)
 
-# Allow Comments
-SANITIZER.AllowComments()
-
 
 def sanitize_html(html):
     return SANITIZER.sanitize(html)

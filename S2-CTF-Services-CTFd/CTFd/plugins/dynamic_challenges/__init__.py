@@ -22,7 +22,7 @@ class DynamicChallenge(Challenges):
 
     def __init__(self, *args, **kwargs):
         super(DynamicChallenge, self).__init__(**kwargs)
-        self.value = kwargs["initial"]
+        self.initial = kwargs["value"]
 
 
 class DynamicValueChallenge(BaseChallenge):
@@ -102,7 +102,6 @@ class DynamicValueChallenge(BaseChallenge):
             "decay": challenge.decay,
             "minimum": challenge.minimum,
             "description": challenge.description,
-            "connection_info": challenge.connection_info,
             "category": challenge.category,
             "state": challenge.state,
             "max_attempts": challenge.max_attempts,
@@ -144,7 +143,7 @@ class DynamicValueChallenge(BaseChallenge):
 
 
 def load(app):
-    upgrade(plugin_name="dynamic_challenges")
+    upgrade()
     CHALLENGE_CLASSES["dynamic"] = DynamicValueChallenge
     register_plugin_assets_directory(
         app, base_path="/plugins/dynamic_challenges/assets/"
