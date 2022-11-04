@@ -1,8 +1,8 @@
-FROM python:3.9-slim-buster
+FROM python:3.7-slim-buster
 WORKDIR /opt/CTFd
 RUN mkdir -p /opt/CTFd /var/log/CTFd /var/uploads /var/log/gunicorn
 
-# hadolint ignore=DL3008 
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
@@ -11,7 +11,6 @@ RUN apt-get update \
         libffi-dev \
         libssl-dev \
         git \
-        gevent \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

@@ -4,7 +4,7 @@ services:
   ctfd:
     container_name: ctfd-gunicorn-appserver
     build: ./
-    image: ctfd-gunicorn:latest
+    image: ctfd-gunicorn:3.3.0
     user: root
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
       UPLOAD_FOLDER: /var/uploads
       DATABASE_URL: $MYSQL_DATABASE_URL
       REDIS_URL: redis://cache:6379
-      WORKERS: 1
+      WORKERS: 10
       LOG_FOLDER: /var/log/CTFd
       ACCESS_LOG: /var/log/gunicorn/access.log
       ERROR_LOG: /var/log/gunicorn/error.log

@@ -6,29 +6,9 @@ from alembic.migration import MigrationContext
 from alembic.operations import Operations
 from alembic.script import ScriptDirectory
 from flask import current_app
-from sqlalchemy import create_engine
-from sqlalchemy import inspect as SQLAInspect
-from sqlalchemy import pool
+from sqlalchemy import create_engine, pool
 
-from CTFd.utils import _get_config, set_config
-
-
-def get_all_tables(op):
-    """
-    Function to list all the tables in the database from a migration
-    """
-    inspector = SQLAInspect(op.get_bind())
-    tables = inspector.get_table_names()
-    return tables
-
-
-def get_columns_for_table(op, table_name):
-    """
-    Function to list the columns in a table from a migration
-    """
-    inspector = SQLAInspect(op.get_bind())
-    columns = inspector.get_columns(table_name)
-    return columns
+from CTFd.utils import get_config, set_config
 
 
 def current(plugin_name=None):
@@ -40,11 +20,7 @@ def current(plugin_name=None):
         caller_path = caller_info[0]
         plugin_name = os.path.basename(os.path.dirname(caller_path))
 
-    # Specifically bypass the cached config so that we always get the database value
-    version = _get_config.__wrapped__(plugin_name + "_alembic_version")
-    if version == KeyError:
-        version = None
-    return version
+    return get_config(plugin_name + "_alembic_version")
 
 
 def upgrade(plugin_name=None, revision=None, lower="current"):
@@ -81,7 +57,7 @@ def upgrade(plugin_name=None, revision=None, lower="current"):
     # "current" points to the current plugin version stored in config
     # None represents the absolute base layer (e.g. first installation)
     if lower == "current":
-        lower = current(plugin_name)
+        lower = get_config(plugin_name + "_alembic_version")
 
     # Do we upgrade to head or to a specific revision
     if revision is None:
@@ -105,4 +81,3 @@ def upgrade(plugin_name=None, revision=None, lower="current"):
 
     # Set the new latest revision
     set_config(plugin_name + "_alembic_version", upper)
-    
