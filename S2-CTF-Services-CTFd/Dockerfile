@@ -1,11 +1,13 @@
-FROM python:3.9-slim-buster
+FROM python:3.7-slim-buster
 WORKDIR /opt/CTFd
-RUN mkdir -p /opt/CTFd /var/log/CTFd /var/uploads
+RUN mkdir -p /opt/CTFd /var/log/CTFd /var/uploads /var/log/gunicorn
 
 # hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
+        default-mysql-client \
+        python3-dev \
         libffi-dev \
         libssl-dev \
         git \
@@ -25,15 +27,14 @@ RUN for d in CTFd/plugins/*; do \
         fi; \
     done;
 
-# hadolint ignore=DL3059
 RUN adduser \
     --disabled-login \
     -u 1001 \
     --gecos "" \
     --shell /bin/bash \
-    ctfd \
-    && chmod +x /opt/CTFd/docker-entrypoint.sh \
-    && chown -R 1001:1001 /opt/CTFd /var/log/CTFd /var/uploads
+    ctfd
+RUN chmod +x /opt/CTFd/docker-entrypoint.sh \
+    && chown -R 1001:1001 /opt/CTFd /var/log/CTFd /var/uploads /var/log/gunicorn
 
 USER 1001
 EXPOSE 8000
