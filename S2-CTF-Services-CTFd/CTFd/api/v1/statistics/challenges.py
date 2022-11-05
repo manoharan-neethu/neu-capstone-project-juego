@@ -31,7 +31,7 @@ class ChallengeSolveStatistics(Resource):
     def get(self):
         chals = (
             Challenges.query.filter(
-                and_(Challenges.state != "hidden", Challenges.state != "locked")
+                and_(Challenges.state != "hidden", Challenges.state != "locked",Challenges.user_state != "hidden")
             )
             .order_by(Challenges.value)
             .all()
@@ -80,7 +80,7 @@ class ChallengeSolvePercentages(Resource):
     @admins_only
     def get(self):
         challenges = (
-            Challenges.query.add_columns("id", "name", "state", "max_attempts")
+            Challenges.query.add_columns("id", "name", "state", "user_state", "max_attempts")
             .order_by(Challenges.value)
             .all()
         )

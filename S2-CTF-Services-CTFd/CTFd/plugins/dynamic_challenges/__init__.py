@@ -105,6 +105,7 @@ class DynamicValueChallenge(BaseChallenge):
             "connection_info": challenge.connection_info,
             "category": challenge.category,
             "state": challenge.state,
+            "user_state": challenge.user_state,
             "max_attempts": challenge.max_attempts,
             "type": challenge.type,
             "type_data": {

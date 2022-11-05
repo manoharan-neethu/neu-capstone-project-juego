@@ -15,7 +15,7 @@ class ScoresDistribution(Resource):
         challenge_count = Challenges.query.count() or 1
         total_points = (
             Challenges.query.with_entities(db.func.sum(Challenges.value).label("sum"))
-            .filter_by(state="visible")
+            .filter_by(state="visible",user_state="visible")
             .first()
             .sum
         ) or 0
