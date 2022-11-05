@@ -103,7 +103,6 @@ class Challenges(db.Model):
     category = db.Column(db.String(80))
     type = db.Column(db.String(80))
     state = db.Column(db.String(80), nullable=False, default="visible")
-    user_state = db.Column(db.String(80), nullable=False, default="visible")
     requirements = db.Column(db.JSON)
 
     files = db.relationship("ChallengeFiles", backref="challenge")

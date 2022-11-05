@@ -154,7 +154,6 @@ class ChallengeList(Resource):
             "category": (str, None),
             "type": (str, None),
             "state": (str, None),
-            "user_state": (str, None),
             "q": (str, None),
             "field": (
                 RawEnum(
@@ -165,7 +164,6 @@ class ChallengeList(Resource):
                         "category": "category",
                         "type": "type",
                         "state": "state",
-                        "user_state": "user_state",
                     },
                 ),
                 None,
@@ -217,14 +215,8 @@ class ChallengeList(Resource):
         chal_q = Challenges.query
         # Admins can see hidden and locked challenges in the admin view
         if admin_view is False:
-            #Set the state of challenge to hidden - Show only the challenges related to a particular user
-            for chal in chal_q:
-                for tag in chal.tags:
-                    if tag != get_current_team().name:
-                        chal.user_state = "hidden"
-
             chal_q = chal_q.filter(
-                and_(Challenges.state != "hidden", Challenges.state != "locked", Challenges.user_state != "hidden")
+                and_(Challenges.state != "hidden", Challenges.state != "locked")
             )
         chal_q = (
             chal_q.filter_by(**query_args)
@@ -360,7 +352,7 @@ class Challenge(Resource):
         else:
             chal = Challenges.query.filter(
                 Challenges.id == challenge_id,
-                and_(Challenges.state != "hidden", Challenges.state != "locked", Challenges.user_state != "hidden"),
+                and_(Challenges.state != "hidden", Challenges.state != "locked"),
             ).first_or_404()
 
         try:
@@ -607,9 +599,6 @@ class ChallengeAttempt(Resource):
         if challenge.state == "locked":
             abort(403)
 
-        if challenge.user_state == "hidden":
-            abort(404)
-
         if challenge.requirements:
             requirements = challenge.requirements.get("prerequisites", [])
             solve_ids = (
@@ -770,7 +759,7 @@ class ChallengeSolves(Resource):
 
         # TODO: Need a generic challenge visibility call.
         # However, it should be stated that a solve on a gated challenge is not considered private.
-        if (challenge.state == "hidden" or challenge.user_state == "hidden") and is_admin() is False:
+        if challenge.state == "hidden" and is_admin() is False:
             abort(404)
 
         Model = get_model()

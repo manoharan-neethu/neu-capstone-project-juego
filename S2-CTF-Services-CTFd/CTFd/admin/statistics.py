@@ -33,7 +33,7 @@ def statistics():
 
     total_points = (
         Challenges.query.with_entities(db.func.sum(Challenges.value).label("sum"))
-        .filter_by(state="visible",user_state="visible")
+        .filter_by(state="visible")
         .first()
         .sum
     ) or 0

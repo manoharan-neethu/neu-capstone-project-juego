@@ -69,7 +69,6 @@ if __name__ == "__main__":
     for challenge in old_data["challenges"]:
         hidden = challenge.pop("hidden")
         challenge["state"] = "hidden" if hidden else "visible"
-        challenge["user_state"] = "hidden" if hidden else "visible"
         new_conn["challenges"].insert(dict(challenge))
     del old_data["challenges"]
 

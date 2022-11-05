@@ -57,7 +57,6 @@ class BaseChallenge(object):
             "next_id": challenge.next_id,
             "category": challenge.category,
             "state": challenge.state,
-            "user_state": challenge.user_state,
             "max_attempts": challenge.max_attempts,
             "type": challenge.type,
             "type_data": {
