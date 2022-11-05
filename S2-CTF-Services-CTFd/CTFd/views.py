@@ -98,7 +98,7 @@ def setup():
                     '<style id="theme-color">\n'
                     ":root {{--theme-color: {theme_color};}}\n"
                     ".navbar{{background-color: var(--theme-color) !important;}}\n"
-                    ".jumbotron{{background-color: var(--theme-color) !important;}}\n"
+                    ".jumbotron{{background-image: url(/themes/core/static/img/Header_background.jpg) !important;background-size: cover !important;color: fff;}}\n"
                     "</style>\n"
                 ).format(theme_color=theme_color)
                 set_config("theme_header", css)

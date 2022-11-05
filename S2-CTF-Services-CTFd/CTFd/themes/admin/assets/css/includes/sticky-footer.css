@@ -18,7 +18,7 @@ body {
   width: 100%;
 
   /* Set the fixed height of the footer here */
-  height: 30px;
+  height: 60px;
 
   /* Override line-height from core because we have two lines in the admin panel */
   line-height: normal !important;
