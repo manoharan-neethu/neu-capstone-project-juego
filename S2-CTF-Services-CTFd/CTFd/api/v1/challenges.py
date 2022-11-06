@@ -215,14 +215,11 @@ class ChallengeList(Resource):
         chal_q = Challenges.query
         # Admins can see hidden and locked challenges in the admin view
         if admin_view is False:
-            log(chal_q)
             chal_q = chal_q.filter(
                 and_(Challenges.state != "hidden", Challenges.state != "locked"))    
             for challenge in chal_q:
                 if challenge.description != "juegouser01":
-                    log(challenge) 
                     chal_q = chal_q.filter(Challenges.id == challenge.id) 
-                    log(chal_q)  
 
         chal_q = (
             chal_q.filter_by(**query_args)
