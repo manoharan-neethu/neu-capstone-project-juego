@@ -218,7 +218,7 @@ class ChallengeList(Resource):
             chal_q = chal_q.filter(
                 and_(Challenges.state != "hidden", Challenges.state != "locked"))    
             for challenge in chal_q:
-                if challenge.description != "juegouser01":
+                if challenge.description == "juegouser01":
                     chal_q = chal_q.filter(Challenges.id == challenge.id) 
 
         chal_q = (
