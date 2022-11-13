@@ -14,6 +14,9 @@ all:
     ctfd:
       hosts:
         ctfd.int.ctf.juego2022.com: 
+    ctfd-do:
+      hosts:
+        ctf-do.juego2022.com: 
     nginx:
       hosts:
         nginx.int.ctf.juego2022.com:

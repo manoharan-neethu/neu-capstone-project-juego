@@ -1,0 +1,17 @@
+- hosts: ctfd-do
+  user: root
+
+  tasks:
+    - name: Build CTFd images (ctfd flask app, redis, and mariadb) and start containers
+      community.docker.docker_compose:
+        project_src: "/root/neu-capstone-project-juego/CTFD"
+        build: yes
+        nocache: yes
+        state: present
+      register: output
+
+    - ansible.builtin.debug:
+        var: output
+
+
+    
