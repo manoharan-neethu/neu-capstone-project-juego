@@ -2,6 +2,16 @@
   user: root
 
   tasks:
+    - name: >-
+        Transfer secrets file containing CTFd secrets. Pull all secrets
+        from password vault and populate ctfd-do-env-template.j2, then
+        transfer the result.
+      ansible.builtin.template:
+        src: ./templates/ctfd-do-env-template.j2
+        dest: "/root/neu-capstone-project-juego/CTFD/.env"
+        owner: ctf
+        group: ctf
+        mode: '0600'
     - name: Build CTFd images (ctfd flask app, redis, and mariadb) and start containers
       community.docker.docker_compose:
         project_src: "/root/neu-capstone-project-juego/CTFD"
