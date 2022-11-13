@@ -1,5 +1,5 @@
 - hosts: ctfd-do
-  user: root
+  user: ctfd-do
 
   tasks:
     - name: >-
