@@ -7,7 +7,7 @@ all:
     dmz:
       hosts:
         haproxy.int.ctf.juego2022.com: 
-        10.10.10.8:
+        nginx.int.ctf.juego2022.com:
     elk:
       hosts:
         elk.int.ctf.juego2022.com:
@@ -19,7 +19,7 @@ all:
         ctf-do.juego2022.com: 
     nginx:
       hosts:
-        10.10.10.8:
+        nginx.int.ctf.juego2022.com:
     haproxy:
       hosts:
         haproxy.int.ctf.juego2022.com:
