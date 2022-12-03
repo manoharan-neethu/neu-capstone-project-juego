@@ -1,0 +1,3 @@
+juegoCTF{The_Elf_On_The_Shelf_99551}
+juegoCTF{The_Elf_On_The_Shelf_60007}
+juegoCTF{The_Elf_On_The_Shelf_83432}

@@ -1,0 +1,22 @@
+    webserver03:
+        image: webserver03:latest
+        container_name: webserver03
+        build: ./web/.
+        volumes:
+          - ./user03/html:/usr/local/apache2/htdocs/
+          - ./user03/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30003:80
+
+    appserver03:
+        image: appserver03:latest
+        container_name: appserver03
+        build: ./app/.
+        depends_on:
+          - webserver03
+        environment:
+          ctf_flag: juegoCTF{twelve_days_of_christmas_30064}
+        volumes:
+          - ./user03/html:/usr/local/apache2/htdocs/
+
+

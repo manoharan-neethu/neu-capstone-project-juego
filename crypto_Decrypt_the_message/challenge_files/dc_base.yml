@@ -1,0 +1,23 @@
+    webserver{id}:
+        image: webserver{id}:latest
+        container_name: webserver{id}
+        build: ./web/.
+        volumes:
+          - ./user{id}/html:/usr/local/apache2/htdocs/
+          - ./user{id}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 300{id}:80
+
+    appserver{id}:
+        image: appserver{id}:latest
+        container_name: appserver{id}
+        build: ./app/.
+        depends_on:
+          - webserver{id}
+        environment:
+          ctf_flag: {flag}
+          key: {key}
+        volumes:
+          - ./user{id}/html:/usr/local/apache2/htdocs/
+
+

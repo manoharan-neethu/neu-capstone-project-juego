@@ -1,0 +1,135 @@
+version: '3.6'
+    
+services: 
+    webserver01:
+        image: webserver01:latest
+        container_name: webserver01
+        build: ./web/.
+        volumes:
+          - ./user01/html:/usr/local/apache2/htdocs/
+          - ./user01/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30001:80
+
+    appserver01:
+        image: appserver01:latest
+        container_name: appserver01
+        build: ./app/.
+        depends_on:
+          - webserver01
+        environment:
+          ctf_flag: juego2022{christmas_special_13340}
+        volumes:
+          - ./user01/html:/usr/local/apache2/htdocs/
+
+
+    webserver02:
+        image: webserver02:latest
+        container_name: webserver02
+        build: ./web/.
+        volumes:
+          - ./user02/html:/usr/local/apache2/htdocs/
+          - ./user02/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30002:80
+
+    appserver02:
+        image: appserver02:latest
+        container_name: appserver02
+        build: ./app/.
+        depends_on:
+          - webserver02
+        environment:
+          ctf_flag: juego2022{christmas_special_53627}
+        volumes:
+          - ./user02/html:/usr/local/apache2/htdocs/
+
+
+    webserver03:
+        image: webserver03:latest
+        container_name: webserver03
+        build: ./web/.
+        volumes:
+          - ./user03/html:/usr/local/apache2/htdocs/
+          - ./user03/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30003:80
+
+    appserver03:
+        image: appserver03:latest
+        container_name: appserver03
+        build: ./app/.
+        depends_on:
+          - webserver03
+        environment:
+          ctf_flag: juego2022{christmas_special_92233}
+        volumes:
+          - ./user03/html:/usr/local/apache2/htdocs/
+
+
+    webserver01:
+        image: webserver01:latest
+        container_name: webserver01
+        build: ./web/.
+        volumes:
+          - ./user01/html:/usr/local/apache2/htdocs/
+          - ./user01/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30001:80
+
+    appserver01:
+        image: appserver01:latest
+        container_name: appserver01
+        build: ./app/.
+        depends_on:
+          - webserver01
+        environment:
+          ctf_flag: juegoctf{christmas_without_grinch_35419}
+        volumes:
+          - ./user01/html:/usr/local/apache2/htdocs/
+
+
+    webserver02:
+        image: webserver02:latest
+        container_name: webserver02
+        build: ./web/.
+        volumes:
+          - ./user02/html:/usr/local/apache2/htdocs/
+          - ./user02/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30002:80
+
+    appserver02:
+        image: appserver02:latest
+        container_name: appserver02
+        build: ./app/.
+        depends_on:
+          - webserver02
+        environment:
+          ctf_flag: juegoctf{christmas_without_grinch_62009}
+        volumes:
+          - ./user02/html:/usr/local/apache2/htdocs/
+
+
+    webserver03:
+        image: webserver03:latest
+        container_name: webserver03
+        build: ./web/.
+        volumes:
+          - ./user03/html:/usr/local/apache2/htdocs/
+          - ./user03/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30003:80
+
+    appserver03:
+        image: appserver03:latest
+        container_name: appserver03
+        build: ./app/.
+        depends_on:
+          - webserver03
+        environment:
+          ctf_flag: juegoctf{christmas_without_grinch_37159}
+        volumes:
+          - ./user03/html:/usr/local/apache2/htdocs/
+
+
