@@ -1,0 +1,3 @@
+juegoCTF{gingerbread_cookie_18025}
+juegoCTF{gingerbread_cookie_58788}
+juegoCTF{gingerbread_cookie_57017}

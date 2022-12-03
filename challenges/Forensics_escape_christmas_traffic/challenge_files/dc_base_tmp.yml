@@ -1,0 +1,22 @@
+    webserver06:
+        image: webserver06:latest
+        container_name: webserver06
+        build: ./web/.
+        volumes:
+          - ./user06/html:/usr/local/apache2/htdocs/
+          - ./user06/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30006:80
+
+    appserver06:
+        image: appserver06:latest
+        container_name: appserver06
+        build: ./app/.
+        depends_on:
+          - webserver06
+        environment:
+          ctf_flag: juegoCTF{christmas_presents_44187}
+        volumes:
+          - ./user06/html:/usr/local/apache2/htdocs/
+
+

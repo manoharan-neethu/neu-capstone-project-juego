@@ -1,0 +1,3 @@
+juegoCTF{twelve_days_of_christmas_97359}
+juegoCTF{twelve_days_of_christmas_37925}
+juegoCTF{twelve_days_of_christmas_30064}

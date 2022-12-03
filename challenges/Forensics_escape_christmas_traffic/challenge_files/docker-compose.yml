@@ -1,0 +1,69 @@
+version: '3.6'
+    
+services: 
+    webserver04:
+        image: webserver04:latest
+        container_name: webserver04
+        build: ./web/.
+        volumes:
+          - ./user04/html:/usr/local/apache2/htdocs/
+          - ./user04/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30004:80
+
+    appserver04:
+        image: appserver04:latest
+        container_name: appserver04
+        build: ./app/.
+        depends_on:
+          - webserver04
+        environment:
+          ctf_flag: juegoCTF{christmas_presents_36901}
+        volumes:
+          - ./user04/html:/usr/local/apache2/htdocs/
+
+
+    webserver05:
+        image: webserver05:latest
+        container_name: webserver05
+        build: ./web/.
+        volumes:
+          - ./user05/html:/usr/local/apache2/htdocs/
+          - ./user05/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30005:80
+
+    appserver05:
+        image: appserver05:latest
+        container_name: appserver05
+        build: ./app/.
+        depends_on:
+          - webserver05
+        environment:
+          ctf_flag: juegoCTF{christmas_presents_83256}
+        volumes:
+          - ./user05/html:/usr/local/apache2/htdocs/
+
+
+    webserver06:
+        image: webserver06:latest
+        container_name: webserver06
+        build: ./web/.
+        volumes:
+          - ./user06/html:/usr/local/apache2/htdocs/
+          - ./user06/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+        ports:
+          - 30006:80
+
+    appserver06:
+        image: appserver06:latest
+        container_name: appserver06
+        build: ./app/.
+        depends_on:
+          - webserver06
+        environment:
+          ctf_flag: juegoCTF{christmas_presents_44187}
+        volumes:
+          - ./user06/html:/usr/local/apache2/htdocs/
+
+
