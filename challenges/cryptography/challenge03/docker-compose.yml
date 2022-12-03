@@ -1,0 +1,9 @@
+version: '3.6'
+    
+services:     
+    crypto01:
+        image: cryptoo1:latest
+        container_name: crypto01
+        restart: always
+        build: ./user01/.
+
