@@ -1,0 +1,115 @@
+version: '3.6'
+
+services: 
+    db01:
+        image: mysql:latest
+        container_name: db01
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - '30004:30001'
+        expose:
+            - '30004'
+        volumes:
+            - ./user01/init.sql:/docker-entrypoint-initdb.d/init.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: GsFiosjNLBBiptfTVE
+            MYSQL_DATABASE: santadb
+            MYSQL_USER: juegouser01
+            MYSQL_PASSWORD: qofxBhXinlKpEgoTbm
+        networks:
+            - db01nw
+
+    db02:
+        image: mysql:latest
+        container_name: db02
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - '30005:30002'
+        expose:
+            - '30005'
+        volumes:
+            - ./user02/init.sql:/docker-entrypoint-initdb.d/init.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: hjkkUJOYbDMopBCAMz
+            MYSQL_DATABASE: santadb
+            MYSQL_USER: juegouser02
+            MYSQL_PASSWORD: uFMHgOjIGiCoSvGyCw
+        networks:
+            - db02nw
+
+    db03:
+        image: mysql:latest
+        container_name: db03
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - '30006:30003'
+        expose:
+            - '30006'
+        volumes:
+            - ./user03/init.sql:/docker-entrypoint-initdb.d/init.sql
+        environment:
+            MYSQL_ROOT_PASSWORD: aneGWOAdojizBSODMK
+            MYSQL_DATABASE: santadb
+            MYSQL_USER: juegouser03
+            MYSQL_PASSWORD: mUrluxHTiLAWfdPljI
+        networks:
+            - db03nw
+
+    adminer01:
+        image: adminer:latest
+        container_name: adminer01
+        restart: always
+        environment:
+            ADMINER_DEFAULT_SERVER: db01
+        volumes:
+            - ./adminer.css:/var/www/html/adminer.css
+            - ./adminer.php:/var/www/html/adminer.php
+        ports:
+            - "30001:8080"
+        links:
+            - db01
+        networks:
+            - db01nw            
+
+    adminer02:
+        image: adminer:latest
+        container_name: adminer02
+        restart: always
+        environment:
+            ADMINER_DEFAULT_SERVER: db02
+        volumes:
+            - ./adminer.css:/var/www/html/adminer.css
+            - ./adminer.php:/var/www/html/adminer.php
+        ports:
+            - "30002:8080"
+        links:
+            - db02     
+        networks:
+            - db02nw                
+
+    adminer03:
+        image: adminer:latest
+        container_name: adminer03
+        restart: always
+        environment:
+            ADMINER_DEFAULT_SERVER: db03
+        volumes:
+            - ./adminer.css:/var/www/html/adminer.css
+            - ./adminer.php:/var/www/html/adminer.php
+        ports:
+            - "30003:8080"
+        links:
+            - db03  
+        networks:
+            - db03nw
+
+networks:
+    db01nw:
+        driver: bridge
+    db02nw:
+        driver: bridge
+    db03nw:      
+        driver: bridge             
