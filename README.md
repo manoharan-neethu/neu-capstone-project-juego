@@ -1,5 +1,7 @@
 # Capstone Project - Juego
 
+![](infra-diagram.svg)
+
 ## Team : 
   - Neethu Manoharan - manoharan.n@northeastern.edu
   - Anderson Julio Auza - julioauza.a@northeastern.edu
