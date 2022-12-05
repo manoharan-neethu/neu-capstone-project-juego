@@ -1,6 +1,6 @@
 # Capstone Project - Juego
 
-![](infra-diagram.svg)
+![](infra-diagram.jpg)
 
 ## Team : 
   - Neethu Manoharan - manoharan.n@northeastern.edu
