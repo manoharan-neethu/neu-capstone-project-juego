@@ -1,6 +1,9 @@
 
-# Notes from CHIK-P Team
-# Chik-p: A Semi-Automated CTF-Building Toolkit
+# Notes from CHIK-P Team - Below details are from the CHIKP repo
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##Chik-p: A Semi-Automated CTF-Building Toolkit
 
 ## Goals
 
