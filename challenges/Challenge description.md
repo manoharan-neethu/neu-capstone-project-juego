@@ -1,6 +1,6 @@
 # Cryptography 1:
-** Name : ** You're a Mean One
-** Description : ** User is required to find the hidden metadata in the image. Tools like exiftool can provide the list of visible/hiddle metadata added to files. In this specific case the artist metadata is added to the Grinch image and contains the flag in string format.
+- ** Name : ** You're a Mean One
+- ** Description : ** User is required to find the hidden metadata in the image. Tools like exiftool can provide the list of visible/hiddle metadata added to files. In this specific case the artist metadata is added to the Grinch image and contains the flag in string format.
   
 # Cryptography 2:
  
