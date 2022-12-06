@@ -5,6 +5,14 @@
 # Cryptography 2:
 - **Name :** Decrypt the message!
 - **Description :** Cipher text is provided to the user in this challenge. The user can guess that classic substitution cipher is used in this case as all the letter contains alphebets. In this case the plain text is encrypted using vigenere cipher using a weak key. Several online tools are available to crack such weak keys eg)https://www.guballa.de/vigenere-solver. Once the cipher text is decrypted , the user is presented with the hint as to solve the actual flag. The last line of the ciphertext contains the key encrypted using rot13 cipher.  
+
+# Web Challenge 1: 
+- **Name :** Christmas Carol
+- **Description :** Concept behind the flag: If the user performs inspect element, he will get a direct hint to perform directory enumeration. By using tools like dirsearch or gobuster etc., the hidden directory can be found. After redirecting to the hidden directory, info.txt folder contains the flag.
+
+# Web Challenge 2: 
+- **Name :** Holiday Cookies
+- **Description :** Concept behind the flag: The user will be prompted to give an input message and image path. The “image path” input is made vulnerable which can steal the base 64 encoded cookie by injecting XSS attack code. The decoded cookie will generate the required flag.
  
 # Database Challenge L1: Better Watch Out
 Link to the challenge page is provided in the description of the challenge tile which you will require to find the flag. 
@@ -28,14 +36,6 @@ Concept behind the flag : Flag is encoded within the metadata of the file to be 
 You can use the IP address and the port provided in the description of challenge tile to go the dedicated challenge page.
 On the redirected page, you will find an image which has the flag. Use your skills to discover the flag from it and complete the challenge. 
 Concept behind the flag: The provided image has the flag. The flag is supposed to be found in the web traffic (pcap). Any tools supporting the same such as Wireshark, TextEdit or Sublime can be used to get the final flag.
-
-# Web Challenge L1: Christmas Carol
-Concept behind the flag: If the user performs inspect element, he will get a direct hint to perform directory enumeration. By using tools like dirsearch or gobuster etc., the hidden directory can be found. After redirecting to the hidden directory, info.txt folder contains the flag.
-
-# Web Challenge L2: Holiday Cookies
-Concept behind the flag: The user will be prompted to give an input message and image path. The “image path” input is made vulnerable which can steal the base 64 encoded cookie by injecting XSS attack code. The decoded cookie will generate the required flag.
-
-
 
 # Miscellaneous Challenge: Snowflake
 Concept behind the flag: This is a file-based challenge, and a python file needs to be downloaded. The flag is encoded inside the code. After analyzing and reverse thinking the code, the user can see that a function call is missing. The user can also find the hints: “Oops! I misplaced the Christmas tree” and “Maybe you need to call the Christmas tree.” After the appropriate function call, the flag will be shown in the output CLI.
