@@ -3,6 +3,8 @@
 - **Description :** User is required to find the hidden metadata in the image. Tools like exiftool can provide the list of visible/hiddle metadata added to files. In this specific case the artist metadata is added to the Grinch image and contains the flag in string format.
   
 # Cryptography 2:
+- **Name :** Decrypt the message!
+- **Description :** Cipher text is provided to the user in this challenge. The user can guess that classic substitution cipher is used in this case as all the letter contains alphebets. In this case the plain text is encrypted using vigenere cipher using a weak key. Several online tools are available to crack such weak keys eg)https://www.guballa.de/vigenere-solver. Once the cipher text is decrypted , the user is presented with the hint as to solve the actual flag. The last line of the ciphertext contains the key encrypted using rot13 cipher.  
  
 # Database Challenge L1: Better Watch Out
 Link to the challenge page is provided in the description of the challenge tile which you will require to find the flag. 
